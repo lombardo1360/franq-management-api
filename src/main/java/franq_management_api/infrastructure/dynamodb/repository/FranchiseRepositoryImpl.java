@@ -44,9 +44,6 @@ public class FranchiseRepositoryImpl implements FranchiseRepository {
 
         FranchiseDynamoEntity franchiseDynamo = FranchiseDynamoMapper.toEntity(franchise);
 
-        System.out.println("PK = " + franchiseDynamo.getPk());
-        System.out.println("SK = " + franchiseDynamo.getSk());
-
         return Mono.fromFuture(
                 table.putItem(franchiseDynamo)
         ).thenReturn(franchise);

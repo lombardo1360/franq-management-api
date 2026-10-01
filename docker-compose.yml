@@ -1,0 +1,35 @@
+services:
+
+  dynamodb:
+    image: amazon/dynamodb-local:latest
+    container_name: franq-dynamodb
+    command: "-jar DynamoDBLocal.jar -sharedDb -inMemory"
+    ports:
+      - "8000:8000"
+
+  dynamodb-init:
+    build:
+      context: ./docker/dynamodb/init
+    container_name: franq-dynamodb-init
+    depends_on:
+      - dynamodb
+    environment:
+      AWS_ACCESS_KEY_ID: local
+      AWS_SECRET_ACCESS_KEY: local
+      AWS_DEFAULT_REGION: us-east-1
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: franq-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dynamodb
+      - dynamodb-init
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      AWS_ACCESS_KEY_ID: local
+      AWS_SECRET_ACCESS_KEY: local
+      AWS_DEFAULT_REGION: us-east-1
