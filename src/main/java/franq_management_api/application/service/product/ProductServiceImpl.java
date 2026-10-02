@@ -1,5 +1,6 @@
 package franq_management_api.application.service.product;
 
+import franq_management_api.application.dto.ProductTopStockResponse;
 import franq_management_api.domain.exception.BranchNotFoundException;
 import franq_management_api.domain.exception.FranchiseNotFoundException;
 import franq_management_api.domain.exception.ProductNotFoundException;
@@ -8,6 +9,7 @@ import franq_management_api.domain.repository.BranchRepository;
 import franq_management_api.domain.repository.FranchiseRepository;
 import franq_management_api.domain.repository.ProductRepository;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -132,6 +134,26 @@ public class ProductServiceImpl implements ProductService{
                         name
                 )
         );
+    }
+
+    @Override
+    public Flux<ProductTopStockResponse> findTopStockByBranch(UUID franchiseId) {
+
+        return productRepository.findTopStockByBranch(franchiseId)
+                .groupBy(Product::getBranchId)
+                .flatMap(group ->
+                        group.reduce((product1, product2) ->
+                                product1.getStock() >= product2.getStock()
+                                        ? product1
+                                        : product2
+                        )
+                )
+                .map(product -> new ProductTopStockResponse(
+                        product.getId(),
+                        product.getName(),
+                        product.getStock(),
+                        product.getBranchId()
+                ));
     }
 
     private Mono<Product> findProduct(

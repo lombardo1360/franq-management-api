@@ -5,12 +5,14 @@ import franq_management_api.domain.repository.ProductRepository;
 import franq_management_api.infrastructure.dynamodb.entity.ProductDynamoEntity;
 import franq_management_api.infrastructure.dynamodb.mapper.ProductDynamoMapper;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbAsyncTable;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedAsyncClient;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+import software.amazon.awssdk.services.dynamodb.model.QueryRequest;
 import software.amazon.awssdk.services.dynamodb.model.ReturnValue;
 import software.amazon.awssdk.services.dynamodb.model.UpdateItemRequest;
 
@@ -123,6 +125,34 @@ public class ProductRepositoryImpl implements ProductRepository {
                         .s(name)
                         .build()
         );
+    }
+
+    @Override
+    public Flux<Product> findTopStockByBranch(UUID franchiseId) {
+
+        Map<String, AttributeValue> values = Map.of(
+                ":pk",
+                AttributeValue.builder()
+                        .s("FRANCHISE#" + franchiseId)
+                        .build()
+        );
+
+        QueryRequest request = QueryRequest.builder()
+                .tableName("franchise-management")
+                .keyConditionExpression("PK = :pk")
+                .expressionAttributeValues(values)
+                .build();
+
+        return Flux.from(
+                        dynamoDbClient.queryPaginator(request)
+                )
+                .flatMapIterable(response -> response.items())
+                .filter(item -> {
+                    String sk = item.get("SK").s();
+                    return sk.startsWith("BRANCH#")
+                            && sk.contains("#PRODUCT#");
+                })
+                .map(ProductDynamoMapper::toDomain);
     }
 
     private Mono<Product> updateAttribute(

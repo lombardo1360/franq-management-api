@@ -1,3 +1,4 @@
+
 resource "aws_iam_role" "ecs_task_execution" {
   name = "franq-management-api-ecs-execution-role"
 
@@ -74,7 +75,7 @@ resource "aws_iam_role_policy" "ecs_task_dynamodb" {
           "dynamodb:Scan"
         ]
 
-        Resource = aws_dynamodb_table.franchise_management.arn
+        Resource = "arn:aws:dynamodb:us-east-1:159596244542:table/franchise-management"
       }
     ]
   })

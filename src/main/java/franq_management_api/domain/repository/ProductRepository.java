@@ -1,6 +1,7 @@
 package franq_management_api.domain.repository;
 
 import franq_management_api.domain.models.Product;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -34,4 +35,6 @@ public interface ProductRepository {
             UUID productId,
             String name
     );
+
+    Flux<Product> findTopStockByBranch(UUID franchiseId);
 }

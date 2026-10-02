@@ -1,6 +1,7 @@
 package franq_management_api.api.controller;
 
 import franq_management_api.application.dto.CreateProductRequest;
+import franq_management_api.application.dto.ProductTopStockResponse;
 import franq_management_api.application.dto.UpdateProductNameRequest;
 import franq_management_api.application.dto.UpdateStockRequest;
 import franq_management_api.application.service.product.ProductService;
@@ -8,6 +9,7 @@ import franq_management_api.domain.models.Product;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -80,6 +82,14 @@ public class ProductController {
                 productId,
                 request.name()
         );
+    }
+
+    @GetMapping("/{franchiseId}/products/top-stock")
+    @ResponseStatus(HttpStatus.OK)
+    public Flux<ProductTopStockResponse> findTopStockByBranch(
+            @PathVariable UUID franchiseId) {
+
+        return productService.findTopStockByBranch(franchiseId);
     }
 
 }
