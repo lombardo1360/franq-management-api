@@ -11,7 +11,6 @@ resource "aws_iam_role" "github_actions" {
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
-
     Statement = [
       {
         Effect = "Allow"
@@ -28,10 +27,15 @@ resource "aws_iam_role" "github_actions" {
           }
 
           StringLike = {
-            "token.actions.githubusercontent.com:sub" = "repo:lombardo1360/franq-management-api:*"
+            "token.actions.githubusercontent.com:sub" = "repo:lombardo1360@86331488/franq-management-api@1398604514:*"
           }
         }
       }
     ]
+
   })
+
+  tags = {
+    Project = "franq-management-api"
+  }
 }

@@ -1,10 +1,8 @@
-
 resource "aws_iam_role" "ecs_task_execution" {
   name = "franq-management-api-ecs-execution-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
-
     Statement = [
       {
         Effect = "Allow"
@@ -29,13 +27,11 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-
 resource "aws_iam_role" "ecs_task" {
   name = "franq-management-api-ecs-task-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
-
     Statement = [
       {
         Effect = "Allow"
@@ -53,7 +49,6 @@ resource "aws_iam_role" "ecs_task" {
     Project = "franq-management-api"
   }
 }
-
 
 resource "aws_iam_role_policy" "ecs_task_dynamodb" {
   name = "franq-management-api-dynamodb"

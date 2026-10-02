@@ -4,7 +4,6 @@ resource "aws_iam_role_policy" "github_actions" {
 
   policy = jsonencode({
     Version = "2012-10-17"
-
     Statement = [
       {
         Effect = "Allow"
@@ -26,7 +25,7 @@ resource "aws_iam_role_policy" "github_actions" {
           "ecr:UploadLayerPart"
         ]
 
-        Resource = aws_ecr_repository.api.arn
+        Resource = "arn:aws:ecr:us-east-1:159596244542:repository/franq-management-api"
       },
       {
         Effect = "Allow"
