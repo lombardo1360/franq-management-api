@@ -1,0 +1,339 @@
+{
+  "info": {
+    "_postman_id": "b378f8a8-6f9d-4953-9135-90ddd44486d0",
+    "name": "Franq Management API",
+    "description": "Postman collection for the Franq Management API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "17801964"
+  },
+  "item": [
+    {
+      "name": "Franchises",
+      "item": [
+        {
+          "name": "Create Franchise",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"McDonald's\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/franchises",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "franchises"
+              ]
+            },
+            "description": "Creates a new franchise."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Franchises",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/franchises",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "franchises"
+              ]
+            },
+            "description": "Returns all franchises."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Franchise By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/franchises/{{franchiseId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "franchises",
+                "{{franchiseId}}"
+              ]
+            },
+            "description": "Returns a franchise by its UUID."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Franchise Name",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Burger King\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/franchises/{{franchiseId}}/name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "franchises",
+                "{{franchiseId}}",
+                "name"
+              ]
+            },
+            "description": "Updates the name of an existing franchise."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Branches",
+      "item": [
+        {
+          "name": "Create Branch",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Main Branch\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/franchises/{{franchiseId}}/branches",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "franchises",
+                "{{franchiseId}}",
+                "branches"
+              ]
+            },
+            "description": "Creates a branch associated with a franchise."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Branch Name",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Branch\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/franchises/{{franchiseId}}/branches/{{branchId}}/name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "franchises",
+                "{{franchiseId}}",
+                "branches",
+                "{{branchId}}",
+                "name"
+              ]
+            },
+            "description": "Updates the name of a branch."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Big Mac\",\n  \"stock\": 50\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/franchises/{{franchiseId}}/branches/{{branchId}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "franchises",
+                "{{franchiseId}}",
+                "branches",
+                "{{branchId}}",
+                "products"
+              ]
+            },
+            "description": "Creates a product associated with a branch."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/franchises/{{franchiseId}}/branches/{{branchId}}/product/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "franchises",
+                "{{franchiseId}}",
+                "branches",
+                "{{branchId}}",
+                "product",
+                "{{productId}}"
+              ]
+            },
+            "description": "Deletes a product from a branch."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Product Stock",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stock\": 75\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/franchises/{{franchiseId}}/branches/{{branchId}}/product/{{productId}}/stock",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "franchises",
+                "{{franchiseId}}",
+                "branches",
+                "{{branchId}}",
+                "product",
+                "{{productId}}",
+                "stock"
+              ]
+            },
+            "description": "Updates the stock of a product."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Product Name",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Big Mac Deluxe\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/franchises/{{franchiseId}}/branches/{{branchId}}/product/{{productId}}/name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "franchises",
+                "{{franchiseId}}",
+                "branches",
+                "{{branchId}}",
+                "product",
+                "{{productId}}",
+                "name"
+              ]
+            },
+            "description": "Updates the name of a product."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Highest Stock Product by Branch",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://44.192.102.140:8080"
+    },
+    {
+      "key": "franchiseId",
+      "value": ""
+    },
+    {
+      "key": "branchId",
+      "value": ""
+    },
+    {
+      "key": "productId",
+      "value": ""
+    }
+  ]
+}

@@ -6,6 +6,10 @@ resource "aws_ecs_service" "api" {
   desired_count = 1
   launch_type   = "FARGATE"
 
+  enable_execute_command = true
+
+  health_check_grace_period_seconds = 120
+
   network_configuration {
     subnets = [
       aws_subnet.public_a.id,
@@ -17,6 +21,12 @@ resource "aws_ecs_service" "api" {
     ]
 
     assign_public_ip = true
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.api.arn
+    container_name   = "franq-management-api"
+    container_port   = 8080
   }
 
   tags = {

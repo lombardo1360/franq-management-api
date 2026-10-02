@@ -29,12 +29,28 @@ public class FranchiseServiceImpl  implements FranchiseService  {
 
     @Override
     public Flux<Franchise> findAll() {
-        return franchiseRepository.findAll();
+
+        return franchiseRepository.findAll()
+                .switchIfEmpty(
+                        Flux.error(
+                                new FranchiseNotFoundException(
+                                        "No franchises found"
+                                )
+                        )
+                );
     }
 
     @Override
     public Mono<Franchise> findById(UUID id) {
-        return franchiseRepository.findById(id);
+
+        return franchiseRepository.findById(id)
+                .switchIfEmpty(
+                        Mono.error(
+                                new FranchiseNotFoundException(
+                                        "Franchise not found"
+                                )
+                        )
+                );
     }
 
     @Override

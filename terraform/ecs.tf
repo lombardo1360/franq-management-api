@@ -23,6 +23,14 @@ resource "aws_ecs_task_definition" "api" {
       image     = "${aws_ecr_repository.api.repository_url}:latest"
       essential = true
 
+
+      environment = [
+        {
+          name  = "SPRING_PROFILES_ACTIVE"
+          value = "aws"
+        }
+      ]
+
       portMappings = [
         {
           containerPort = 8080
