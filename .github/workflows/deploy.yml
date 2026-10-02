@@ -18,19 +18,11 @@ ECS_SERVICE: franq-management-api
 jobs:
 deploy:
 runs-on: ubuntu-latest
-  
-  ```
-steps:
 
-  # -----------------------------------------
-  # 1. Checkout
-  # -----------------------------------------
+steps:
   - name: Checkout
     uses: actions/checkout@v4
 
-  # -----------------------------------------
-  # 2. Debug GitHub context
-  # -----------------------------------------
   - name: Debug GitHub context
     run: |
       echo "Repository: $GITHUB_REPOSITORY"
@@ -38,9 +30,6 @@ steps:
       echo "Event: $GITHUB_EVENT_NAME"
       echo "Actor: $GITHUB_ACTOR"
 
-  # -----------------------------------------
-  # 3. Debug OIDC token
-  # -----------------------------------------
   - name: Debug OIDC token
     uses: actions/github-script@v7
     with:
@@ -55,37 +44,24 @@ steps:
         console.log(`OIDC audience: ${payload.aud}`);
         console.log(`OIDC subject: ${payload.sub}`);
 
-  # -----------------------------------------
-  # 4. Configure AWS credentials
-  # -----------------------------------------
   - name: Configure AWS credentials
     uses: aws-actions/configure-aws-credentials@v4
     with:
       role-to-assume: arn:aws:iam::159596244542:role/franq-management-api-github-actions
       aws-region: ${{ env.AWS_REGION }}
 
-  # -----------------------------------------
-  # 5. Verify AWS identity
-  # -----------------------------------------
   - name: Verify AWS identity
     run: |
       aws sts get-caller-identity
 
-  # -----------------------------------------
-  # 6. Login to Amazon ECR
-  # -----------------------------------------
   - name: Login to Amazon ECR
     uses: aws-actions/amazon-ecr-login@v2
 
-  # -----------------------------------------
-  # 7. Build and push Docker image
-  # -----------------------------------------
   - name: Build and push Docker image
     env:
       ECR_REGISTRY: 159596244542.dkr.ecr.us-east-1.amazonaws.com
       IMAGE_TAG: ${{ github.sha }}
     run: |
-
       docker build \
         -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
         .
@@ -100,9 +76,6 @@ steps:
       docker push \
         $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-  # -----------------------------------------
-  # 8. Update ECS service
-  # -----------------------------------------
   - name: Update ECS service
     run: |
       aws ecs update-service \
@@ -110,9 +83,6 @@ steps:
         --service $ECS_SERVICE \
         --force-new-deployment
 
-  # -----------------------------------------
-  # 9. Wait for deployment
-  # -----------------------------------------
   - name: Wait for deployment
     run: |
       aws ecs wait services-stable \
